@@ -3,3 +3,12 @@ prints("n = 1234567890 * 987654321 = ");
 printd(n);
 
 for(i = 0; i<10; i++)
+{
+    prints("hello");
+}
+
+while(n = 4)
+{
+    prints("world");    
+
+}

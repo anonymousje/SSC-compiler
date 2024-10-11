@@ -22,6 +22,7 @@
 "printd"                        {debugFlex(tok_printd); return tok_printd;}
 "prints"                        {debugFlex(tok_prints); return tok_prints;}
 "for"                           {debugFlex(tok_for); return tok_for;}
+"while"                         {debugFlex(tok_while); return tok_while;}
 "++"                            {debugFlex(tok_increment); return tok_increment;}
 "--"                            {debugFlex(tok_decrement); return tok_decrement;}
 [a-zA-Z][a-zA-Z0-9_]*           {debugFlex(tok_identifier); yylval.identifier=strdup(yytext); return tok_identifier;}
@@ -29,7 +30,7 @@
 \"[^"]*\"                       {debugFlex(tok_string_literal); yylval.string_literal=strdup(yytext); return tok_string_literal;}
 \/\/.*                          {;}
 [ \n\r\t]                       {;}
-"<="|">="|"<"|">"|"+"|"-"|"*"|"\/"|"="|";"|"("|")" {debugFlex(yytext[0]); return yytext[0];} 
+"<="|">="|"<"|">"|"+"|"-"|"*"|"\/"|"="|";"|"{"|"}"|"("|")" {debugFlex(yytext[0]); return yytext[0];} 
 .                                {debugFlex(-1); yyerror("this is an illegal lexeme"); exit(EXIT_FAILURE);}
 %%
 
