@@ -38,6 +38,7 @@
 
 %left '+' '-'
 %left '*' '/'
+%left '<' '>'
 %left '(' ')'
 
 %start root
@@ -60,24 +61,25 @@ printd: tok_printd '(' term ')' ';'        {debugBison(8); print("%lf\n", $3);}
 
 term:   tok_identifier                  {debugBison(9); $$ = getValueFromSymbolTable($1);} 
     | tok_double_literal                {debugBison(10); $$ = $1;}
+    
     ;
 
 assignment: tok_identifier '=' expression ';' {debugBison(11); setValueInSymbolTable($1, $3);} 
+    | term '<' term   ';'      {debugBison(100); performComparisonOperation($1, $3, '<');}
+    | term '>' term   ';'     {debugBison(200); performComparisonOperation($1, $3, '>');}
     ;
 
 expression: term                         {debugBison(12); $$= $1;}
-    | expression '+''+'      {debugBison(18); $$ = performBinaryOperation($1,$1,'!');}
-    | expression '-''-'      {debugBison(19); $$ = performBinaryOperation($1,$1,'@');}
+    | expression '@'    {debugBison(18); $$ = performBinaryOperation($1,$1,'!');}
+    | expression '!'      {debugBison(19); $$ = performBinaryOperation($1,$1,'@');}
     | expression '+' expression         {debugBison(13); $$ = performBinaryOperation($1, $3, '+');}
     | expression '-' expression         {debugBison(14); $$ = performBinaryOperation($1, $3, '-');}
     | expression '/' expression         {debugBison(15); $$ = performBinaryOperation($1, $3, '/');}
     | expression '*' expression         {debugBison(16); $$ = performBinaryOperation($1, $3, '*');}
-    | expression '<' expression         {debugBison(100); $$ = performComparisonOperation($1, $3, '<');}
-    | expression '>' expression         {debugBison(200); $$ = performComparisonOperation($1, $3, '>');}
     | '(' expression ')'                {debugBison(17); $$= $2;}
     ;
 
-for_loop: tok_for '(' assignment';' expression ';' expression ')' '{' root '}' {debugBison(20);}
+for_loop: tok_for '(' assignment assignment expression ')' '{' root '}' {debugBison(20);}
     ;
 
 while_loop:

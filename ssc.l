@@ -28,7 +28,7 @@
 \"[^"]*\"                       {debugFlex(tok_string_literal); yylval.string_literal=strdup(yytext); return tok_string_literal;}
 \/\/.*                          {;}
 [ \n\r\t]                       {;}
-"<="|">="|"<"|">"|"++"|"--"|"+"|"-"|"*"|"\/"|"="|";"|"{"|"}"|"("|")" {debugFlex(yytext[0]); return yytext[0];} 
+"<="|">="|"<"|">"|"@"|"!"|"++"|"--"|"+"|"-"|"*"|"\/"|"="|";"|"{"|"}"|"("|")" {debugFlex(yytext[0]); return yytext[0];} 
 .                                {debugFlex(-1); yyerror("this is an illegal lexeme"); exit(EXIT_FAILURE);}
 %%
 
