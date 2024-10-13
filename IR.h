@@ -24,18 +24,18 @@ double performBinaryOperation (double lhs, double rhs, int op) {
  	}
 }
 
-double performComparisonOperation (double lhs, double rhs, int op) {
+double performComparisonOperation (double lhs, double rhs, char op) {
  	switch(op) {
  		case '>':
 			if (lhs > rhs)
- 				return 1.0;
+ 				return rhs - lhs;
 			else
-				return 0.0;
+				return 1;
  		case '<':
 			if (lhs < rhs)
- 				return 1.0;
+ 				return rhs-lhs;
 			else
-				return 0.0;
+				return 1;
  		default:
  			return 0;
  	}

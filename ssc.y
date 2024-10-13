@@ -16,6 +16,8 @@
     #else
         #define debugBison(a)
     #endif
+
+
 %}
 
 %union {
@@ -23,6 +25,7 @@
     double double_literal;
     char *string_literal;
 }
+
 
 %token tok_printd
 %token tok_prints
@@ -34,7 +37,11 @@
 %token <double_literal> tok_double_literal
 %token <string_literal> tok_string_literal
 
-%type <double_literal> term expression assignment
+%type <double_literal> term expression assignment printd
+%type <string> prints
+%type root
+
+
 
 %left '+' '-'
 %left '*' '/'
@@ -74,13 +81,25 @@ expression: term                        {debugBison(12); $$= $1;}
     | expression '-' expression         {debugBison(14); $$ = performBinaryOperation($1, $3, '-');}
     | expression '/' expression         {debugBison(15); $$ = performBinaryOperation($1, $3, '/');}
     | expression '*' expression         {debugBison(16); $$ = performBinaryOperation($1, $3, '*');}
-    | expression '<' expression   ';'      {debugBison(100); performComparisonOperation($1, $3, '<');}
-    | expression '>' expression   ';'     {debugBison(200); performComparisonOperation($1, $3, '>');}
+    | expression '<' expression   ';'      {debugBison(100); $$ = performComparisonOperation($1, $3, '<');}
+    | expression '>' expression   ';'     {debugBison(200); $$ = performComparisonOperation($1, $3, '>');}
     | '(' expression ')'                {debugBison(17); $$= $2;}
     ;
 
 for_loop: tok_for '(' assignment  expression assignment ')' '{'root '}' {debugBison(20);
+        
         print("%lf\n",$3);
+        print("%lf\n",$4);
+        int i = 0;
+        while(i < $4)
+        {
+            
+            print("%lf\n",$4);
+            i++;
+        }
+        
+
+
         }
     ;
 

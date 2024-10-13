@@ -69,7 +69,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 21 "ssc.y"
+#line 23 "ssc.y"
 
     char *identifier;
     double double_literal;
