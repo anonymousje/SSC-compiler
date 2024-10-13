@@ -27,9 +27,15 @@ double performBinaryOperation (double lhs, double rhs, int op) {
 double performComparisonOperation (double lhs, double rhs, int op) {
  	switch(op) {
  		case '>':
- 			return lhs > rhs;
+			if (lhs > rhs)
+ 				return 1.0;
+			else
+				return 0.0;
  		case '<':
- 			return lhs < rhs;
+			if (lhs < rhs)
+ 				return 1.0;
+			else
+				return 0.0;
  		default:
  			return 0;
  	}
@@ -44,9 +50,10 @@ void print(const char* format, double value) {
 }
 
 
-void setValueInSymbolTable(const char* id, double value) {
+double setValueInSymbolTable(const char* id, double value) {
 	std::string name(id);
-	symbolTable[name] = value;
+	symbolTable[name] = value; 
+	return value;
 }
 
 double getValueFromSymbolTable(const char* id) {
@@ -56,3 +63,4 @@ double getValueFromSymbolTable(const char* id) {
 	}
 	return 0; // this is the default value for an identifier.
 }
+

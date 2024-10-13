@@ -34,7 +34,7 @@
 %token <double_literal> tok_double_literal
 %token <string_literal> tok_string_literal
 
-%type <double_literal> term expression
+%type <double_literal> term expression assignment
 
 %left '+' '-'
 %left '*' '/'
@@ -64,22 +64,24 @@ term:   tok_identifier                  {debugBison(9); $$ = getValueFromSymbolT
     
     ;
 
-assignment: tok_identifier '=' expression ';' {debugBison(11); setValueInSymbolTable($1, $3);} 
-    | term '<' term   ';'      {debugBison(100); performComparisonOperation($1, $3, '<');}
-    | term '>' term   ';'     {debugBison(200); performComparisonOperation($1, $3, '>');}
+assignment: tok_identifier '=' expression ';' {debugBison(11); $$ = setValueInSymbolTable($1, $3); print("%lf\n",$$);} 
+    | term '!'    {debugBison(18); $$ = performBinaryOperation($1,$1,'!');}
+    | term '@'      {debugBison(19); $$ = performBinaryOperation($1,$1,'@');}
     ;
 
-expression: term                         {debugBison(12); $$= $1;}
-    | expression '@'    {debugBison(18); $$ = performBinaryOperation($1,$1,'!');}
-    | expression '!'      {debugBison(19); $$ = performBinaryOperation($1,$1,'@');}
+expression: term                        {debugBison(12); $$= $1;}
     | expression '+' expression         {debugBison(13); $$ = performBinaryOperation($1, $3, '+');}
     | expression '-' expression         {debugBison(14); $$ = performBinaryOperation($1, $3, '-');}
     | expression '/' expression         {debugBison(15); $$ = performBinaryOperation($1, $3, '/');}
     | expression '*' expression         {debugBison(16); $$ = performBinaryOperation($1, $3, '*');}
+    | expression '<' expression   ';'      {debugBison(100); performComparisonOperation($1, $3, '<');}
+    | expression '>' expression   ';'     {debugBison(200); performComparisonOperation($1, $3, '>');}
     | '(' expression ')'                {debugBison(17); $$= $2;}
     ;
 
-for_loop: tok_for '(' assignment assignment expression ')' '{' root '}' {debugBison(20);}
+for_loop: tok_for '(' assignment  expression assignment ')' '{'root '}' {debugBison(20);
+        print("%lf\n",$3);
+        }
     ;
 
 while_loop:
