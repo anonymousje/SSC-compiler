@@ -152,7 +152,9 @@ enum yysymbol_kind_t
   YYSYMBOL_assignment = 29,                /* assignment  */
   YYSYMBOL_expression = 30,                /* expression  */
   YYSYMBOL_for_loop = 31,                  /* for_loop  */
-  YYSYMBOL_while_loop = 32                 /* while_loop  */
+  YYSYMBOL_empty = 32,                     /* empty  */
+  YYSYMBOL_empty2 = 33,                    /* empty2  */
+  YYSYMBOL_while_loop = 34                 /* while_loop  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -480,16 +482,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  19
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   109
+#define YYLAST   78
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  24
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  9
+#define YYNNTS  11
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  24
+#define YYNRULES  26
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  66
+#define YYNSTATES  68
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   264
@@ -540,8 +542,8 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int8 yyrline[] =
 {
        0,    58,    58,    59,    60,    61,    62,    63,    66,    69,
-      72,    73,    77,    78,    79,    82,    83,    84,    85,    86,
-      87,    88,    89,    92,   102
+      72,    73,    77,    78,    79,    80,    81,    84,    85,    86,
+      87,    88,    90,    93,    99,   100,   102
 };
 #endif
 
@@ -562,7 +564,7 @@ static const char *const yytname[] =
   "tok_double_literal", "tok_string_literal", "'+'", "'-'", "'*'", "'/'",
   "'<'", "'>'", "'('", "')'", "';'", "'='", "'!'", "'@'", "'{'", "'}'",
   "$accept", "root", "prints", "printd", "term", "assignment",
-  "expression", "for_loop", "while_loop", YY_NULLPTR
+  "expression", "for_loop", "empty", "empty2", "while_loop", YY_NULLPTR
 };
 
 static const char *
@@ -572,7 +574,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-15)
+#define YYPACT_NINF (-21)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -586,13 +588,13 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     101,   -14,     0,     4,     6,     9,   -15,    25,   101,   101,
-     -12,   101,   101,   101,     7,    17,    11,     5,     5,   -15,
-     -15,   -15,   -15,   -15,   -15,   -15,   -15,   -15,    14,    31,
-       5,     5,   -15,    78,    51,    49,    50,    45,    86,     5,
-       5,     5,     5,     5,     5,    54,   -15,   -15,   -15,    68,
-     -15,    32,    32,    36,    36,    60,    69,   101,    55,   -15,
-     -15,    63,   101,   -15,    71,   -15
+      65,   -10,     7,   -21,    28,    26,   -21,    20,    65,    65,
+       4,    65,    65,    65,     1,    37,    31,     6,     6,   -21,
+     -21,   -21,     1,     1,   -21,   -21,   -21,   -21,   -21,   -21,
+      32,    33,    24,     6,   -21,    42,    30,    38,    40,    46,
+      47,    24,    50,     6,     6,     6,     6,    44,   -21,   -21,
+     -21,   -21,   -21,    24,   -21,    22,    22,   -21,   -21,    65,
+      57,    52,   -21,   -21,    54,    65,    55,   -21
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -600,25 +602,27 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     0,     0,     0,    10,    11,     0,     2,     2,
+       2,     0,     0,    24,     0,    10,    11,     0,     2,     2,
        0,     2,     2,     2,     0,     0,     0,     0,     0,     1,
-       3,     4,    13,    14,     5,     6,     7,    10,     0,     0,
-       0,     0,    15,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,    12,     9,     8,     0,
-      22,    16,    17,    19,    18,     0,     0,     2,     0,    20,
-      21,     0,     2,    24,     0,    23
+       3,     4,     0,     0,    13,    14,     5,     6,     7,    10,
+       0,     0,     0,     0,    17,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    12,    15,
+      16,     9,     8,     0,    22,    18,    19,    21,    20,     2,
+       0,     0,    25,    26,     0,     2,     0,    23
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -15,    -8,   -15,   -15,    -7,   -10,    -1,   -15,   -15
+     -21,    -8,   -21,   -21,    -7,   -20,   -16,   -21,   -21,   -21,
+     -21
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     7,     8,     9,    10,    11,    33,    12,    13
+       0,     7,     8,     9,    10,    11,    35,    12,    16,    64,
+      13
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -626,32 +630,26 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      20,    21,    14,    24,    25,    26,    30,    28,    22,    23,
-      32,    32,    27,     6,    27,     6,    15,    34,     5,     6,
-      16,    31,    17,    32,    32,    19,    29,    49,    18,    37,
-      38,    35,    32,    32,    32,    32,    32,    32,    51,    52,
-      53,    54,    55,    56,    41,    42,    43,    44,    36,    61,
-      43,    44,     5,     6,    64,    39,    40,    41,    42,    43,
-      44,    39,    40,    41,    42,    43,    44,    47,    48,    46,
-      39,    40,    41,    42,    43,    44,    57,    62,    59,    39,
-      40,    41,    42,    43,    44,    58,    63,    60,    39,    40,
-      41,    42,    43,    44,    65,    45,    39,    40,    41,    42,
-      43,    44,     0,    50,     1,     2,     3,     4,     5,     6
+      20,    21,    36,    26,    27,    28,    14,    30,    29,     6,
+      34,    34,    41,    29,     6,    37,    38,    42,    22,    23,
+      19,    53,    33,    15,    24,    25,    34,    55,    56,    57,
+      58,     5,     6,    60,    45,    46,    34,    34,    34,    34,
+      43,    44,    45,    46,    17,    18,    31,    32,    48,    39,
+      40,    61,    43,    44,    45,    46,    49,    66,    50,    47,
+      43,    44,    45,    46,    51,    52,    59,    54,     1,     2,
+       3,     4,     5,     6,    62,    63,    65,     0,    67
 };
 
 static const yytype_int8 yycheck[] =
 {
-       8,     9,    16,    11,    12,    13,    16,    14,    20,    21,
-      17,    18,     7,     8,     7,     8,    16,    18,     7,     8,
-      16,    16,    16,    30,    31,     0,     9,    37,    19,    30,
-      31,    17,    39,    40,    41,    42,    43,    44,    39,    40,
-      41,    42,    43,    44,    12,    13,    14,    15,    17,    57,
-      14,    15,     7,     8,    62,    10,    11,    12,    13,    14,
-      15,    10,    11,    12,    13,    14,    15,    18,    18,    18,
-      10,    11,    12,    13,    14,    15,    22,    22,    18,    10,
-      11,    12,    13,    14,    15,    17,    23,    18,    10,    11,
-      12,    13,    14,    15,    23,    17,    10,    11,    12,    13,
-      14,    15,    -1,    17,     3,     4,     5,     6,     7,     8
+       8,     9,    18,    11,    12,    13,    16,    14,     7,     8,
+      17,    18,    32,     7,     8,    22,    23,    33,    14,    15,
+       0,    41,    16,    16,    20,    21,    33,    43,    44,    45,
+      46,     7,     8,    53,    12,    13,    43,    44,    45,    46,
+      10,    11,    12,    13,    16,    19,     9,    16,    18,    17,
+      17,    59,    10,    11,    12,    13,    18,    65,    18,    17,
+      10,    11,    12,    13,    18,    18,    22,    17,     3,     4,
+       5,     6,     7,     8,    17,    23,    22,    -1,    23
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -659,28 +657,28 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     3,     4,     5,     6,     7,     8,    25,    26,    27,
-      28,    29,    31,    32,    16,    16,    16,    16,    19,     0,
-      25,    25,    20,    21,    25,    25,    25,     7,    28,     9,
-      29,    16,    28,    30,    30,    17,    17,    30,    30,    10,
-      11,    12,    13,    14,    15,    17,    18,    18,    18,    29,
-      17,    30,    30,    30,    30,    30,    30,    22,    17,    18,
-      18,    25,    22,    23,    25,    23
+      28,    29,    31,    34,    16,    16,    32,    16,    19,     0,
+      25,    25,    14,    15,    20,    21,    25,    25,    25,     7,
+      28,     9,    16,    16,    28,    30,    30,    28,    28,    17,
+      17,    29,    30,    10,    11,    12,    13,    17,    18,    18,
+      18,    18,    18,    29,    17,    30,    30,    30,    30,    22,
+      29,    25,    17,    23,    33,    22,    25,    23
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
        0,    24,    25,    25,    25,    25,    25,    25,    26,    27,
-      28,    28,    29,    29,    29,    30,    30,    30,    30,    30,
-      30,    30,    30,    31,    32
+      28,    28,    29,    29,    29,    29,    29,    30,    30,    30,
+      30,    30,    30,    31,    32,    33,    34
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     0,     2,     2,     2,     2,     2,     5,     5,
-       1,     1,     4,     2,     2,     1,     3,     3,     3,     3,
-       4,     4,     3,     9,     7
+       1,     1,     4,     2,     2,     4,     4,     1,     3,     3,
+       3,     3,     3,    11,     0,     0,     7
 };
 
 
@@ -1146,150 +1144,159 @@ yyreduce:
   case 2: /* root: %empty  */
 #line 58 "ssc.y"
                                        {debugBison(1);}
-#line 1150 "ssc.tab.c"
+#line 1148 "ssc.tab.c"
     break;
 
   case 3: /* root: prints root  */
 #line 59 "ssc.y"
                                       {debugBison(2);}
-#line 1156 "ssc.tab.c"
+#line 1154 "ssc.tab.c"
     break;
 
   case 4: /* root: printd root  */
 #line 60 "ssc.y"
                                       {debugBison(3);}
-#line 1162 "ssc.tab.c"
+#line 1160 "ssc.tab.c"
     break;
 
   case 5: /* root: assignment root  */
 #line 61 "ssc.y"
                                       {debugBison(4);}
-#line 1168 "ssc.tab.c"
+#line 1166 "ssc.tab.c"
     break;
 
   case 6: /* root: for_loop root  */
 #line 62 "ssc.y"
                                       {debugBison(5);}
-#line 1174 "ssc.tab.c"
+#line 1172 "ssc.tab.c"
     break;
 
   case 7: /* root: while_loop root  */
 #line 63 "ssc.y"
                                       {debugBison(6);}
-#line 1180 "ssc.tab.c"
+#line 1178 "ssc.tab.c"
     break;
 
   case 8: /* prints: tok_prints '(' tok_string_literal ')' ';'  */
 #line 66 "ssc.y"
                                                     {debugBison(7); print("%s\n", (yyvsp[-2].string_literal));     cppFile << "cout << " << (yyvsp[-2].string_literal) << " << endl;\n";}
-#line 1186 "ssc.tab.c"
+#line 1184 "ssc.tab.c"
     break;
 
   case 9: /* printd: tok_printd '(' term ')' ';'  */
 #line 69 "ssc.y"
                                            {debugBison(8); print("%lf\n", (yyvsp[-2].double_literal));     cppFile << "cout << " << (yyvsp[-2].double_literal) << " << endl;\n";}
-#line 1192 "ssc.tab.c"
+#line 1190 "ssc.tab.c"
     break;
 
   case 10: /* term: tok_identifier  */
 #line 72 "ssc.y"
                                         {debugBison(9); (yyval.double_literal) = getValueFromSymbolTable((yyvsp[0].identifier));}
-#line 1198 "ssc.tab.c"
+#line 1196 "ssc.tab.c"
     break;
 
   case 11: /* term: tok_double_literal  */
 #line 73 "ssc.y"
                                         {debugBison(10); (yyval.double_literal) = (yyvsp[0].double_literal);}
-#line 1204 "ssc.tab.c"
+#line 1202 "ssc.tab.c"
     break;
 
   case 12: /* assignment: tok_identifier '=' expression ';'  */
 #line 77 "ssc.y"
-                                              {debugBison(11); (yyval.double_literal) = setValueInSymbolTable((yyvsp[-3].identifier), (yyvsp[-1].double_literal)); print("%lf\n",(yyval.double_literal));     cppFile << (yyvsp[-3].identifier) << " = " << (yyvsp[-1].double_literal) << ";\n";}
-#line 1210 "ssc.tab.c"
+                                              {debugBison(11); (yyval.double_literal) = setValueInSymbolTable((yyvsp[-3].identifier), (yyvsp[-1].double_literal)); print("%lf\n",(yyval.double_literal));     cppFile << (yyvsp[-3].identifier) << " = " << (yyvsp[-1].double_literal) <<";";}
+#line 1208 "ssc.tab.c"
     break;
 
   case 13: /* assignment: term '!'  */
 #line 78 "ssc.y"
-                  {debugBison(18); (yyval.double_literal) = performBinaryOperation((yyvsp[-1].double_literal),(yyvsp[-1].double_literal),'!');}
-#line 1216 "ssc.tab.c"
+                  {debugBison(18); cppFile << (yyvsp[-1].double_literal) << "++";}
+#line 1214 "ssc.tab.c"
     break;
 
   case 14: /* assignment: term '@'  */
 #line 79 "ssc.y"
-                    {debugBison(19); (yyval.double_literal) = performBinaryOperation((yyvsp[-1].double_literal),(yyvsp[-1].double_literal),'@');}
-#line 1222 "ssc.tab.c"
+                    {debugBison(19); cppFile << (yyvsp[-1].double_literal) << "++";}
+#line 1220 "ssc.tab.c"
     break;
 
-  case 15: /* expression: term  */
-#line 82 "ssc.y"
-                                        {debugBison(12); (yyval.double_literal)= (yyvsp[0].double_literal);}
-#line 1228 "ssc.tab.c"
+  case 15: /* assignment: term '<' term ';'  */
+#line 80 "ssc.y"
+                               {debugBison(100); cppFile << (yyvsp[-3].double_literal) << " < " << (yyvsp[-1].double_literal) <<";";}
+#line 1226 "ssc.tab.c"
     break;
 
-  case 16: /* expression: expression '+' expression  */
-#line 83 "ssc.y"
-                                        {debugBison(13); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '+');}
-#line 1234 "ssc.tab.c"
+  case 16: /* assignment: term '>' term ';'  */
+#line 81 "ssc.y"
+                              {debugBison(200); cppFile << (yyvsp[-3].double_literal) << " > " << (yyvsp[-1].double_literal) << ";" ;}
+#line 1232 "ssc.tab.c"
     break;
 
-  case 17: /* expression: expression '-' expression  */
+  case 17: /* expression: term  */
 #line 84 "ssc.y"
-                                        {debugBison(14); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '-');}
-#line 1240 "ssc.tab.c"
+                                        {debugBison(12); (yyval.double_literal)= (yyvsp[0].double_literal);}
+#line 1238 "ssc.tab.c"
     break;
 
-  case 18: /* expression: expression '/' expression  */
+  case 18: /* expression: expression '+' expression  */
 #line 85 "ssc.y"
-                                        {debugBison(15); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '/');}
-#line 1246 "ssc.tab.c"
+                                        {debugBison(13); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '+');}
+#line 1244 "ssc.tab.c"
     break;
 
-  case 19: /* expression: expression '*' expression  */
+  case 19: /* expression: expression '-' expression  */
 #line 86 "ssc.y"
-                                        {debugBison(16); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '*');}
-#line 1252 "ssc.tab.c"
+                                        {debugBison(14); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '-');}
+#line 1250 "ssc.tab.c"
     break;
 
-  case 20: /* expression: expression '<' expression ';'  */
+  case 20: /* expression: expression '/' expression  */
 #line 87 "ssc.y"
-                                           {debugBison(100); (yyval.double_literal) = performComparisonOperation((yyvsp[-3].double_literal), (yyvsp[-1].double_literal), '<');}
-#line 1258 "ssc.tab.c"
+                                        {debugBison(15); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '/');}
+#line 1256 "ssc.tab.c"
     break;
 
-  case 21: /* expression: expression '>' expression ';'  */
+  case 21: /* expression: expression '*' expression  */
 #line 88 "ssc.y"
-                                          {debugBison(200); (yyval.double_literal) = performComparisonOperation((yyvsp[-3].double_literal), (yyvsp[-1].double_literal), '>');}
-#line 1264 "ssc.tab.c"
+                                        {debugBison(16); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '*');}
+#line 1262 "ssc.tab.c"
     break;
 
   case 22: /* expression: '(' expression ')'  */
-#line 89 "ssc.y"
-                                        {debugBison(17); (yyval.double_literal)= (yyvsp[-1].double_literal);}
-#line 1270 "ssc.tab.c"
+#line 90 "ssc.y"
+                                        {debugBison(17); cppFile << "(" << (yyvsp[-1].double_literal) << ")" << ";\n";}
+#line 1268 "ssc.tab.c"
     break;
 
-  case 23: /* for_loop: tok_for '(' assignment expression assignment ')' '{' root '}'  */
-#line 92 "ssc.y"
-                                                                        {debugBison(20);
-        
-            cppFile << "for (" << (yyvsp[-6].double_literal) << "; " << (yyvsp[-5].double_literal) << "; " << (yyvsp[-4].double_literal) << ") {\n";
-                cppFile << "}\n";
-
-
+  case 23: /* for_loop: tok_for empty '(' assignment assignment assignment ')' empty2 '{' root '}'  */
+#line 93 "ssc.y"
+                                                                                    {debugBison(20);
+        cppFile << "}";
+            
         }
-#line 1282 "ssc.tab.c"
+#line 1277 "ssc.tab.c"
     break;
 
-  case 24: /* while_loop: tok_while '(' expression ')' '{' root '}'  */
-#line 102 "ssc.y"
-                                              {debugBison(22);     cppFile << "while (" << (yyvsp[-4].double_literal) << ") {\n";
-    cppFile << "}\n";}
+  case 24: /* empty: %empty  */
+#line 99 "ssc.y"
+       {cppFile << "for(";}
+#line 1283 "ssc.tab.c"
+    break;
+
+  case 25: /* empty2: %empty  */
+#line 100 "ssc.y"
+        {cppFile << ")" << "{\n";}
 #line 1289 "ssc.tab.c"
     break;
 
+  case 26: /* while_loop: tok_while '(' expression ')' '{' root '}'  */
+#line 102 "ssc.y"
+                                                      {debugBison(22);     cppFile << "while (int i <" << (yyvsp[-4].double_literal) << ") {\n";
+    cppFile << "}\n";}
+#line 1296 "ssc.tab.c"
+    break;
 
-#line 1293 "ssc.tab.c"
+
+#line 1300 "ssc.tab.c"
 
       default: break;
     }

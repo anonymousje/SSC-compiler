@@ -74,9 +74,11 @@ term:   tok_identifier                  {debugBison(9); $$ = getValueFromSymbolT
     
     ;
 
-assignment: tok_identifier '=' expression ';' {debugBison(11); $$ = setValueInSymbolTable($1, $3); print("%lf\n",$$);     cppFile << $1 << " = " << $3 << ";\n";} 
-    | term '!'    {debugBison(18); $$ = performBinaryOperation($1,$1,'!');}
-    | term '@'      {debugBison(19); $$ = performBinaryOperation($1,$1,'@');}
+assignment: tok_identifier '=' expression ';' {debugBison(11); $$ = setValueInSymbolTable($1, $3); print("%lf\n",$$);     cppFile << $1 << " = " << $3 <<";";} 
+    | term '!'    {debugBison(18); cppFile << $1 << "++";}
+    | term '@'      {debugBison(19); cppFile << $1 << "++";}
+    | term '<' term   ';'      {debugBison(100); cppFile << $1 << " < " << $3 <<";";}
+    | term '>' term   ';'     {debugBison(200); cppFile << $1 << " > " << $3 << ";" ;}
     ;
 
 expression: term                        {debugBison(12); $$= $1;}
@@ -84,22 +86,20 @@ expression: term                        {debugBison(12); $$= $1;}
     | expression '-' expression         {debugBison(14); $$ = performBinaryOperation($1, $3, '-');}
     | expression '/' expression         {debugBison(15); $$ = performBinaryOperation($1, $3, '/');}
     | expression '*' expression         {debugBison(16); $$ = performBinaryOperation($1, $3, '*');}
-    | expression '<' expression   ';'      {debugBison(100); $$ = performComparisonOperation($1, $3, '<');}
-    | expression '>' expression   ';'     {debugBison(200); $$ = performComparisonOperation($1, $3, '>');}
-    | '(' expression ')'                {debugBison(17); $$= $2;}
+   
+    | '(' expression ')'                {debugBison(17); cppFile << "(" << $2 << ")" << ";\n";}
     ;
 
-for_loop: tok_for '(' assignment  expression assignment ')' '{'root '}' {debugBison(20);
-        
-            cppFile << "for (" << $3 << "; " << $4 << "; " << $5 << ") {\n";
-                cppFile << "}\n";
-
-
+for_loop: tok_for empty '(' assignment  assignment assignment ')' empty2'{'root '}' {debugBison(20);
+        cppFile << "}";
+            
         }
     ;
 
-while_loop:
-    tok_while '(' expression ')' '{'root '}'  {debugBison(22);     cppFile << "while (" << $3 << ") {\n";
+empty: {cppFile << "for(";}
+empty2: {cppFile << ")" << "{\n";}
+
+while_loop: tok_while '(' expression ')' '{'root '}'  {debugBison(22);     cppFile << "while (int i <" << $3 << ") {\n";
     cppFile << "}\n";}
     ;
 
