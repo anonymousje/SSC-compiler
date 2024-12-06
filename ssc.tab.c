@@ -69,6 +69,9 @@
 /* First part of user prologue.  */
 #line 1 "ssc.y"
 
+    #include <fstream>
+
+    std::ofstream cppFile;
     #include <stdio.h>
     #include <stdlib.h>
     // Contains our functions to be reused later by llvm.
@@ -89,7 +92,7 @@
 
 
 
-#line 93 "ssc.tab.c"
+#line 96 "ssc.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -536,9 +539,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    55,    55,    56,    57,    58,    59,    60,    63,    66,
-      69,    70,    74,    75,    76,    79,    80,    81,    82,    83,
-      84,    85,    86,    89,   107
+       0,    58,    58,    59,    60,    61,    62,    63,    66,    69,
+      72,    73,    77,    78,    79,    82,    83,    84,    85,    86,
+      87,    88,    89,    92,   102
 };
 #endif
 
@@ -1141,159 +1144,152 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* root: %empty  */
-#line 55 "ssc.y"
+#line 58 "ssc.y"
                                        {debugBison(1);}
-#line 1147 "ssc.tab.c"
+#line 1150 "ssc.tab.c"
     break;
 
   case 3: /* root: prints root  */
-#line 56 "ssc.y"
+#line 59 "ssc.y"
                                       {debugBison(2);}
-#line 1153 "ssc.tab.c"
+#line 1156 "ssc.tab.c"
     break;
 
   case 4: /* root: printd root  */
-#line 57 "ssc.y"
+#line 60 "ssc.y"
                                       {debugBison(3);}
-#line 1159 "ssc.tab.c"
+#line 1162 "ssc.tab.c"
     break;
 
   case 5: /* root: assignment root  */
-#line 58 "ssc.y"
+#line 61 "ssc.y"
                                       {debugBison(4);}
-#line 1165 "ssc.tab.c"
+#line 1168 "ssc.tab.c"
     break;
 
   case 6: /* root: for_loop root  */
-#line 59 "ssc.y"
+#line 62 "ssc.y"
                                       {debugBison(5);}
-#line 1171 "ssc.tab.c"
+#line 1174 "ssc.tab.c"
     break;
 
   case 7: /* root: while_loop root  */
-#line 60 "ssc.y"
+#line 63 "ssc.y"
                                       {debugBison(6);}
-#line 1177 "ssc.tab.c"
+#line 1180 "ssc.tab.c"
     break;
 
   case 8: /* prints: tok_prints '(' tok_string_literal ')' ';'  */
-#line 63 "ssc.y"
-                                                    {debugBison(7); print("%s\n", (yyvsp[-2].string_literal));}
-#line 1183 "ssc.tab.c"
+#line 66 "ssc.y"
+                                                    {debugBison(7); print("%s\n", (yyvsp[-2].string_literal));     cppFile << "cout << " << (yyvsp[-2].string_literal) << " << endl;\n";}
+#line 1186 "ssc.tab.c"
     break;
 
   case 9: /* printd: tok_printd '(' term ')' ';'  */
-#line 66 "ssc.y"
-                                           {debugBison(8); print("%lf\n", (yyvsp[-2].double_literal));}
-#line 1189 "ssc.tab.c"
+#line 69 "ssc.y"
+                                           {debugBison(8); print("%lf\n", (yyvsp[-2].double_literal));     cppFile << "cout << " << (yyvsp[-2].double_literal) << " << endl;\n";}
+#line 1192 "ssc.tab.c"
     break;
 
   case 10: /* term: tok_identifier  */
-#line 69 "ssc.y"
+#line 72 "ssc.y"
                                         {debugBison(9); (yyval.double_literal) = getValueFromSymbolTable((yyvsp[0].identifier));}
-#line 1195 "ssc.tab.c"
+#line 1198 "ssc.tab.c"
     break;
 
   case 11: /* term: tok_double_literal  */
-#line 70 "ssc.y"
+#line 73 "ssc.y"
                                         {debugBison(10); (yyval.double_literal) = (yyvsp[0].double_literal);}
-#line 1201 "ssc.tab.c"
+#line 1204 "ssc.tab.c"
     break;
 
   case 12: /* assignment: tok_identifier '=' expression ';'  */
-#line 74 "ssc.y"
-                                              {debugBison(11); (yyval.double_literal) = setValueInSymbolTable((yyvsp[-3].identifier), (yyvsp[-1].double_literal)); print("%lf\n",(yyval.double_literal));}
-#line 1207 "ssc.tab.c"
+#line 77 "ssc.y"
+                                              {debugBison(11); (yyval.double_literal) = setValueInSymbolTable((yyvsp[-3].identifier), (yyvsp[-1].double_literal)); print("%lf\n",(yyval.double_literal));     cppFile << (yyvsp[-3].identifier) << " = " << (yyvsp[-1].double_literal) << ";\n";}
+#line 1210 "ssc.tab.c"
     break;
 
   case 13: /* assignment: term '!'  */
-#line 75 "ssc.y"
+#line 78 "ssc.y"
                   {debugBison(18); (yyval.double_literal) = performBinaryOperation((yyvsp[-1].double_literal),(yyvsp[-1].double_literal),'!');}
-#line 1213 "ssc.tab.c"
+#line 1216 "ssc.tab.c"
     break;
 
   case 14: /* assignment: term '@'  */
-#line 76 "ssc.y"
+#line 79 "ssc.y"
                     {debugBison(19); (yyval.double_literal) = performBinaryOperation((yyvsp[-1].double_literal),(yyvsp[-1].double_literal),'@');}
-#line 1219 "ssc.tab.c"
+#line 1222 "ssc.tab.c"
     break;
 
   case 15: /* expression: term  */
-#line 79 "ssc.y"
+#line 82 "ssc.y"
                                         {debugBison(12); (yyval.double_literal)= (yyvsp[0].double_literal);}
-#line 1225 "ssc.tab.c"
+#line 1228 "ssc.tab.c"
     break;
 
   case 16: /* expression: expression '+' expression  */
-#line 80 "ssc.y"
+#line 83 "ssc.y"
                                         {debugBison(13); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '+');}
-#line 1231 "ssc.tab.c"
+#line 1234 "ssc.tab.c"
     break;
 
   case 17: /* expression: expression '-' expression  */
-#line 81 "ssc.y"
+#line 84 "ssc.y"
                                         {debugBison(14); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '-');}
-#line 1237 "ssc.tab.c"
+#line 1240 "ssc.tab.c"
     break;
 
   case 18: /* expression: expression '/' expression  */
-#line 82 "ssc.y"
+#line 85 "ssc.y"
                                         {debugBison(15); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '/');}
-#line 1243 "ssc.tab.c"
+#line 1246 "ssc.tab.c"
     break;
 
   case 19: /* expression: expression '*' expression  */
-#line 83 "ssc.y"
+#line 86 "ssc.y"
                                         {debugBison(16); (yyval.double_literal) = performBinaryOperation((yyvsp[-2].double_literal), (yyvsp[0].double_literal), '*');}
-#line 1249 "ssc.tab.c"
+#line 1252 "ssc.tab.c"
     break;
 
   case 20: /* expression: expression '<' expression ';'  */
-#line 84 "ssc.y"
+#line 87 "ssc.y"
                                            {debugBison(100); (yyval.double_literal) = performComparisonOperation((yyvsp[-3].double_literal), (yyvsp[-1].double_literal), '<');}
-#line 1255 "ssc.tab.c"
+#line 1258 "ssc.tab.c"
     break;
 
   case 21: /* expression: expression '>' expression ';'  */
-#line 85 "ssc.y"
+#line 88 "ssc.y"
                                           {debugBison(200); (yyval.double_literal) = performComparisonOperation((yyvsp[-3].double_literal), (yyvsp[-1].double_literal), '>');}
-#line 1261 "ssc.tab.c"
+#line 1264 "ssc.tab.c"
     break;
 
   case 22: /* expression: '(' expression ')'  */
-#line 86 "ssc.y"
+#line 89 "ssc.y"
                                         {debugBison(17); (yyval.double_literal)= (yyvsp[-1].double_literal);}
-#line 1267 "ssc.tab.c"
+#line 1270 "ssc.tab.c"
     break;
 
   case 23: /* for_loop: tok_for '(' assignment expression assignment ')' '{' root '}'  */
-#line 89 "ssc.y"
+#line 92 "ssc.y"
                                                                         {debugBison(20);
         
-        print("%lf\n",(yyvsp[-6].double_literal));
-        print("%lf\n",(yyvsp[-5].double_literal));
-        int i = 0;
-        while(i < (yyvsp[-5].double_literal))
-        {
-            
-            print("%lf\n",(yyvsp[-5].double_literal));
-            i++;
-        }
-        
+            cppFile << "for (" << (yyvsp[-6].double_literal) << "; " << (yyvsp[-5].double_literal) << "; " << (yyvsp[-4].double_literal) << ") {\n";
+                cppFile << "}\n";
 
 
         }
-#line 1287 "ssc.tab.c"
+#line 1282 "ssc.tab.c"
     break;
 
   case 24: /* while_loop: tok_while '(' expression ')' '{' root '}'  */
-#line 107 "ssc.y"
-                                              {debugBison(22);}
-#line 1293 "ssc.tab.c"
+#line 102 "ssc.y"
+                                              {debugBison(22);     cppFile << "while (" << (yyvsp[-4].double_literal) << ") {\n";
+    cppFile << "}\n";}
+#line 1289 "ssc.tab.c"
     break;
 
 
-#line 1297 "ssc.tab.c"
+#line 1293 "ssc.tab.c"
 
       default: break;
     }
@@ -1486,7 +1482,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 110 "ssc.y"
+#line 106 "ssc.y"
 
 
 void yyerror(const char *err) {
@@ -1502,9 +1498,15 @@ int main(int argc, char** argv) {
 		yyin = stdin; //otherwise read from terminal
 	}
 	
+    cppFile.open("output.cpp"); // Open output file.
+    cppFile << "#include <iostream>\nusing namespace std;\nint main() {\n"; // Add boilerplate code.
+
 	//yyparse will call internally yylex
 	//It will get a token and insert it into AST
 	int parserResult = yyparse();
+
+    cppFile << "return 0;\n}\n"; // Close main function.
+    cppFile.close(); // Close file.
 	
 	return EXIT_SUCCESS;
 }

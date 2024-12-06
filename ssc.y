@@ -1,4 +1,7 @@
 %{
+    #include <fstream>
+
+    std::ofstream cppFile;
     #include <stdio.h>
     #include <stdlib.h>
     // Contains our functions to be reused later by llvm.
@@ -60,10 +63,10 @@ root:   /* empty */                    {debugBison(1);}
     | while_loop root                 {debugBison(6);}
     ;
 
-prints: tok_prints '(' tok_string_literal ')' ';'   {debugBison(7); print("%s\n", $3);} 
+prints: tok_prints '(' tok_string_literal ')' ';'   {debugBison(7); print("%s\n", $3);     cppFile << "cout << " << $3 << " << endl;\n";} 
     ;
 
-printd: tok_printd '(' term ')' ';'        {debugBison(8); print("%lf\n", $3);}
+printd: tok_printd '(' term ')' ';'        {debugBison(8); print("%lf\n", $3);     cppFile << "cout << " << $3 << " << endl;\n";}
     ;
 
 term:   tok_identifier                  {debugBison(9); $$ = getValueFromSymbolTable($1);} 
@@ -71,7 +74,7 @@ term:   tok_identifier                  {debugBison(9); $$ = getValueFromSymbolT
     
     ;
 
-assignment: tok_identifier '=' expression ';' {debugBison(11); $$ = setValueInSymbolTable($1, $3); print("%lf\n",$$);} 
+assignment: tok_identifier '=' expression ';' {debugBison(11); $$ = setValueInSymbolTable($1, $3); print("%lf\n",$$);     cppFile << $1 << " = " << $3 << ";\n";} 
     | term '!'    {debugBison(18); $$ = performBinaryOperation($1,$1,'!');}
     | term '@'      {debugBison(19); $$ = performBinaryOperation($1,$1,'@');}
     ;
@@ -88,23 +91,16 @@ expression: term                        {debugBison(12); $$= $1;}
 
 for_loop: tok_for '(' assignment  expression assignment ')' '{'root '}' {debugBison(20);
         
-        print("%lf\n",$3);
-        print("%lf\n",$4);
-        int i = 0;
-        while(i < $4)
-        {
-            
-            print("%lf\n",$4);
-            i++;
-        }
-        
+            cppFile << "for (" << $3 << "; " << $4 << "; " << $5 << ") {\n";
+                cppFile << "}\n";
 
 
         }
     ;
 
 while_loop:
-    tok_while '(' expression ')' '{'root '}'  {debugBison(22);}
+    tok_while '(' expression ')' '{'root '}'  {debugBison(22);     cppFile << "while (" << $3 << ") {\n";
+    cppFile << "}\n";}
     ;
 
 %%
@@ -122,9 +118,15 @@ int main(int argc, char** argv) {
 		yyin = stdin; //otherwise read from terminal
 	}
 	
+    cppFile.open("output.cpp"); // Open output file.
+    cppFile << "#include <iostream>\nusing namespace std;\nint main() {\n"; // Add boilerplate code.
+
 	//yyparse will call internally yylex
 	//It will get a token and insert it into AST
 	int parserResult = yyparse();
+
+    cppFile << "return 0;\n}\n"; // Close main function.
+    cppFile.close(); // Close file.
 	
 	return EXIT_SUCCESS;
 }
